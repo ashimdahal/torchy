@@ -61,9 +61,32 @@ class Module(torch_nn.Module):
         loss = torch.stack([l['valid_loss'] for l in out]).mean()
         if self.accuracy:
             acc = torch.stack([l['valid_acc'] for l in out]).mean()
+            return {'valid_loss': loss.item() , 'valid_acc': acc.item()}
+
+        return {'valid_loss': loss.item(), }
     
     def __log_epoch(self,e,res):
-        ...
+        if self.accuracy:
+            print((
+                "[{} / {}] epoch/s,"
+                "training loss is {:.4f} validation loss is {:.4f}, validation accuracy is {:.4f} "
+                )
+            .format(
+                e+1,epoch,
+                res['train_loss'],
+                res['valid_loss'],
+                res['valid_acc']
+                ))
+        else:
+            print((
+                "[{} / {}] epoch/s,"
+                "training loss is {:.4f} validation loss is {:.4f} "
+                )
+            .format(
+                e+1,epoch,
+                res['train_loss'],
+                res['valid_loss'],
+                ))
 
     @torch.no_grad()
     def validate(self, valid_dl, loss_fn):
@@ -97,7 +120,7 @@ class Module(torch_nn.Module):
             
             res = self.validate(valid_dataloader, loss_fn)
             res['train_loss'] = torch.stack(train_loss).mean().item()
-            
+
             self.__log_epoch(e,res)
             self.hist.append(res)
         return self, self.hist
