@@ -35,30 +35,72 @@ except ModuleNotFoundError:
 
 class Module(torch_nn.Module):
     def get_loss(self, batch, loss_fn):
-        ...
+        self.loss_fn = loss_fn
+        x, y = batch
+        y_hat = self(x)
+        loss =  self.loss_fn(y_hat, y)
+
+        return loss
     
-    def __valid_step():
-        ...
+    def __valid_step(self, batch, loss_fn):
+        loss = self.get_loss(batch, loss_fn)
+        if self.accuracy:
+            x,y = batch
+            y_hat = self(x)
+            acc = self._accuracy(labels = y_hat, preds = y)
+            return {'valid_loss' : loss , 'valid_acc' : acc}
+        return {'valid_loss': loss}
+
+    @staticmethod
+    def _accuracy(labels,preds):
+        acc = torch.sum(torch.round(preds) == labels) / len(labels)
+        return acc
+
+    @staticmethod
+    def __mean_validation(out):
+        loss = torch.stack([l['valid_loss'] for l in out]).mean()
+        if self.accuracy:
+            acc = torch.stack([l['valid_acc'] for l in out]).mean()
     
-    def __mean_validation():
-        ...
-    
-    def __log_epoch():
+    def __log_epoch(self,e,res):
         ...
 
-    def fit(self, dataloader, loss_fn, opt, epochs, valid = None,) -> tuple[dict,int]:
+    @torch.no_grad()
+    def validate(self, valid_dl, loss_fn):
+        self.eval()
+        out = [self.__valid_step(batch, loss_fn) for batch in valid_dl]
+        return self.__mean_validation(out)
+
+    def fit(
+        self,
+        train_dataloader, 
+        loss_fn, 
+        opt, 
+        epochs, 
+        valid_dataloader = None, 
+        valid = 30, 
+        accuracy = False
+        ):
+        self.accuracy = accuracy 
         self.hist = []
         for e in tqdm(range(epochs),desc="Running Epoch"):
 
             self.train()
             self.train_loss =[]
-            for batch in tqdm(dataloader,desc='Running Batch'):
+            for batch in tqdm(train_dataloader, desc='Running Batch'):
 
-                loss = self.get_loss(batch,loss_fn)
+                loss = self.get_loss(batch, loss_fn)
                 self.train_loss.append(loss)
                 loss.backward()
                 opt.step()
                 opt.zero_grad()
+            
+            res = self.validate(valid_dataloader, loss_fn)
+            res['train_loss'] = torch.stack(train_loss).mean().item()
+            
+            self.__log_epoch(e,res)
+            self.hist.append(res)
+        return self, self.hist
 
     @classmethod
     def from_model():
