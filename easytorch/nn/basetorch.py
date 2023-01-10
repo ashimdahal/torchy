@@ -71,7 +71,7 @@ class Module(torch_nn.Module):
                 "training loss is {:.4f} No Validation Loss and Accuracy Because you didn't provide validation dataloader"
                 )
             .format(
-                e+1,epoch,
+                e+1,self.epochs,
                 res['train_loss'],
                 ))
             return 0
@@ -120,7 +120,7 @@ class Module(torch_nn.Module):
 
     def _fit_dataloader(self):
         self.hist = []
-        for e in tqdm(range(selfepochs),desc="Running Epoch"):
+        for e in range(self.epochs):
 
             self.train()
             self.train_loss =[]
@@ -138,10 +138,9 @@ class Module(torch_nn.Module):
                     }
                 self.hist.append(res)
                 self.__log_epoch(e, res)
-                return self, self.hist
-
-            res = self.validate(self.valid_dataloader, self.loss_fn)
-            res['train_loss'] = torch.stack(self.train_loss).mean().item()
+            else:
+                res = self.validate(self.valid_dataloader, self.loss_fn)
+                res['train_loss'] = torch.stack(self.train_loss).mean().item()
 
             self.__log_epoch(e,res)
             self.hist.append(res)
@@ -176,7 +175,7 @@ class Module(torch_nn.Module):
             self.train_pct = 100 - valid_pct
             self.device = device
             return self._fit_dataset()
-            
+
         print(
             ("Please either provide a DataLoader or a TensorDataset"
             " to train the model into. Read the docs: https://github.com/ashimdahal/easy-torch"))
