@@ -1,10 +1,4 @@
-from ...nn import TorchNotInstalledError
-
-try:
-    from torch.utils.data import random_split
-except ModuleNotFoundError:
-    raise TorchNotInstalledError()
-
+from torch.utils.data import random_split
 
 class DeviceDL:
     

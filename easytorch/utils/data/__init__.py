@@ -1,8 +1,6 @@
-from ...nn import TorchNotInstalledError
+from torch.utils.data import *
 
-try:
-    from torch.utils.data import *
-except ModuleNotFoundError:
-    raise TorchNotInstalledError()
-
-from .new_utils import *
+from .new_utils import (
+    DeviceDL,
+    SplitPct
+)
