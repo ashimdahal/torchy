@@ -1,8 +1,12 @@
 # Welcome to torchy
 torchy is a work in progress and will be going through constant changes everyday.
 ## Introduction
-easy-torch is a PyTorch wrapper that has some additional benefits to using plain pytorch. With easy-torch you have everything in pytorch plus
-some additional features found on other libraries. 
+torchy is a PyTorch wrapper that has some additional benefits to using plain pytorch. With easy-torch you have everything in pytorch plus
+some additional features found on other libraries. The main separating factor between torchy and torchfit or 100s of other pytorch-like
+modules that exists is that you don't have to re-learn things for torchy.
+
+torchy is a wrapper build on top of pytorch which enables you to use your existing code by just replacing 
+`import torch.nn as nn` with `import torchy.nn as nn`.
 ## Installation using pip
 ## Additional Functionality
 ```python
