@@ -142,8 +142,8 @@ class Module(torch_nn.Module):
                 res = self.validate(self.valid_dataloader, self.loss_fn)
                 res['train_loss'] = torch.stack(self.train_loss).mean().item()
 
-            self.__log_epoch(e,res)
-            self.hist.append(res)
+                self.__log_epoch(e,res)
+                self.hist.append(res)
         return self, self.hist
 
     def _fit_dataset(self):
