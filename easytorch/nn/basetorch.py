@@ -1,6 +1,5 @@
 class TorchNotInstalledError(Exception):
-    """
-    Exception raised when torch is not installed beforehand.
+    """Exception raised when torch is not installed beforehand.
     This Exception shouldn't occur if easytorch is installed via pip. 
     If any developer finds himself editing the source code of easytorch and has a different virtual environment running, 
     TorchNotInstalledError will be handy in that usecase.
@@ -98,7 +97,7 @@ class Module(torch_nn.Module):
                 res['train_loss'],
                 res['valid_loss'],
                 ))
-
+    @staticmethod
     def pct_to_val(train_pct,data):
     
         '''Helper function to make code cleaer.
@@ -109,8 +108,8 @@ class Module(torch_nn.Module):
         data: the dataset
         returns: numbers of data'''
 
-        train_num = int(train_pct/100*len(self.data))
-        valid_num = int(len(data) - self.train_num)
+        train_num = int(train_pct/100*len(data))
+        valid_num = int(len(data) - train_num)
         return train_num , valid_num
 
     @torch.no_grad()
@@ -126,9 +125,9 @@ class Module(torch_nn.Module):
             self.train()
             self.train_loss =[]
             for batch in tqdm(self.train_dataloader, desc='Running Batch'):
-
                 loss = self.get_loss(batch, self.loss_fn)
                 self.train_loss.append(loss)
+                # Back Propagation
                 loss.backward()
                 self.opt.step()
                 self.opt.zero_grad()
@@ -158,19 +157,29 @@ class Module(torch_nn.Module):
             opt, 
             epochs, 
             valid_dataloader=None, 
-            valid=30, 
+            valid_pct=30, 
             accuracy=False,
             device='cpu'
         ):
         self.epochs = epochs
         self.loss_fn = loss_fn
         self.opt = opt
-        self.valid_dataloader
-
+        self.valid_dataloader = valid_dataloader
         self.accuracy = accuracy 
+
         if 'DataLoader' in str(type(train_dataloader)):
             self.train_dataloader = train_dataloader
             return self._fit_dataloader()
+
+        if 'TensorDataset' in str(type(train_dataloader)):
+            self.tensor_ds = train_dataloader
+            self.train_pct = 100 - valid_pct
+            self.device = device
+            return self._fit_dataset()
+            
+        print(
+            ("Please either provide a DataLoader or a TensorDataset"
+            " to train the model into. Read the docs: https://github.com/ashimdahal/easy-torch"))
 
 
     @classmethod
