@@ -66,6 +66,17 @@ class Module(torch_nn.Module):
         return {'valid_loss': loss.item(), }
     
     def __log_epoch(self,e,res):
+        if self.valid_dataloader is None:
+            print((
+                "[{} / {}] epoch/s,"
+                "training loss is {:.4f} No Validation Loss and Accuracy Because you didn't provide validation dataloader"
+                )
+            .format(
+                e+1,epoch,
+                res['train_loss'],
+                ))
+            return 0
+
         if self.accuracy:
             print((
                 "[{} / {}] epoch/s,"
@@ -88,42 +99,79 @@ class Module(torch_nn.Module):
                 res['valid_loss'],
                 ))
 
+    def pct_to_val(train_pct,data):
+    
+        '''Helper function to make code cleaer.
+        changes percentage split into numbers of data.
+        INPUTS:
+        train_pct: the percentage of training data 
+        valid_pct: the percentage of validation data
+        data: the dataset
+        returns: numbers of data'''
+
+        train_num = int(train_pct/100*len(self.data))
+        valid_num = int(len(data) - self.train_num)
+        return train_num , valid_num
+
     @torch.no_grad()
     def validate(self, valid_dl, loss_fn):
         self.eval()
         out = [self.__valid_step(batch, loss_fn) for batch in valid_dl]
         return self.__mean_validation(out)
 
-    def fit(
-        self,
-        train_dataloader, 
-        loss_fn, 
-        opt, 
-        epochs, 
-        valid_dataloader = None, 
-        valid = 30, 
-        accuracy = False
-        ):
-        self.accuracy = accuracy 
+    def _fit_dataloader(self):
         self.hist = []
-        for e in tqdm(range(epochs),desc="Running Epoch"):
+        for e in tqdm(range(selfepochs),desc="Running Epoch"):
 
             self.train()
             self.train_loss =[]
-            for batch in tqdm(train_dataloader, desc='Running Batch'):
+            for batch in tqdm(self.train_dataloader, desc='Running Batch'):
 
-                loss = self.get_loss(batch, loss_fn)
+                loss = self.get_loss(batch, self.loss_fn)
                 self.train_loss.append(loss)
                 loss.backward()
-                opt.step()
-                opt.zero_grad()
-            
-            res = self.validate(valid_dataloader, loss_fn)
-            res['train_loss'] = torch.stack(train_loss).mean().item()
+                self.opt.step()
+                self.opt.zero_grad()
+
+            if self.valid_dataloader is None:
+                res = {
+                    'train_loss':torch.stack(self.train_loss).mean().item()
+                    }
+                self.hist.append(res)
+                self.__log_epoch(e, res)
+                return self, self.hist
+
+            res = self.validate(self.valid_dataloader, self.loss_fn)
+            res['train_loss'] = torch.stack(self.train_loss).mean().item()
 
             self.__log_epoch(e,res)
             self.hist.append(res)
         return self, self.hist
+
+    def _fit_dataset(self):
+        ...
+
+    def fit(
+            self,
+            train_dataloader, 
+            loss_fn, 
+            opt, 
+            epochs, 
+            valid_dataloader=None, 
+            valid=30, 
+            accuracy=False,
+            device='cpu'
+        ):
+        self.epochs = epochs
+        self.loss_fn = loss_fn
+        self.opt = opt
+        self.valid_dataloader
+
+        self.accuracy = accuracy 
+        if 'DataLoader' in str(type(train_dataloader)):
+            self.train_dataloader = train_dataloader
+            return self._fit_dataloader()
+
 
     @classmethod
     def from_model():
