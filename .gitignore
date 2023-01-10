@@ -1,2 +1,4 @@
 __pycache__/
 test.py
+# for build and packaging
+dist/
