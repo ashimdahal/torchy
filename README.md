@@ -5,7 +5,7 @@ easy-torch is a PyTorch wrapper that has some additional benefits to using plain
 some additional features found on other libraries. 
 ## Installation using pip
 ## Additional Functionality
-```
+```python
 import easytorch.nn as nn
 import torch
 from easytorch.utils.data import TensorDataset, DataLoader, random_split, DeviceDL
@@ -29,7 +29,7 @@ model = model.fit(train, loss_fn,opt,20,valid_pct = 20,batch_size=2)
 You can also use a dataloader instead of a dataset. If you're using a dataloader be sure to pass additional argument "valid_dataloader" otherwise 
 the no model validation would be carried out.
 
-```
+```python
 dl = DataLoader(train,batch_size = 2)
 model = model.fit(dl, loss_fn,opt,20)
 
