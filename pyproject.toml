@@ -1,0 +1,38 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "torchy"
+version = "0.0.1"
+description = "A pytorch wrapper that makes .fit() (and others) possible in nn.Module!"
+readme = "README.md"
+requires-python = ">=3.8"
+license = {file = "LICENSE.txt"}
+keywords = ["Torch", "PyTorch", "Deep Learning", "Tensorflow"]
+authors = [
+  {email = "codeashim@gmail.com"},
+  {name = "Ashim Dahal"}
+]
+# maintainers = [
+#   {name = "Brett Cannon", email = "brett@python.org"}
+# ]
+classifiers = [
+  "Development Status :: 2 - Pre-Alpha",
+  "Programming Language :: Python",
+  "Intended Audience :: Developers",
+  "Operating System :: OS Independent",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+dependencies = [
+  "torch",
+]
+
+# dynamic = ["version", "description"]
+
+[project.urls]
+# homepage = "https://example.com"
+# documentation = "https://readthedocs.org"
+repository = "https://github.com/ashimdahal/easy-torch.git"
+changelog = "https://github.com/me/spam/blob/master/CHANGELOG.md"
