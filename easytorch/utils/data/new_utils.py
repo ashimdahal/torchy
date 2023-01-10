@@ -1,6 +1,11 @@
 from torch.utils.data import random_split
 
 class DeviceDL:
+
+    def to_device(self, data, device):
+        if isinstance(data,(list,tuple)):
+            return [self.to_device(d,device) for d in data]
+        return data.to(device,non_blocking = True)
     
     def __init__(self,dl,dev):
         self.dl = dl
@@ -8,7 +13,7 @@ class DeviceDL:
     
     def __iter__(self):
         for batch in self.dl:
-            yield to_device(batch,self.dev)
+            yield self.to_device(batch,self.dev)
             
     def __len__(self):
         return len(self.dl)
