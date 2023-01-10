@@ -28,6 +28,7 @@ try:
     import torch.nn as torch_nn
     import torch
     from tqdm import tqdm
+    from ..utils.data import DeviceDL, random_split, DataLoader
 except ModuleNotFoundError:
     raise TorchNotInstalledError()
 
@@ -144,10 +145,31 @@ class Module(torch_nn.Module):
 
                 self.__log_epoch(e,res)
                 self.hist.append(res)
-        return self, self.hist
+        return self
 
     def _fit_dataset(self):
-        ...
+        train_ds, valid_ds = random_split(self.tensor_ds, self.train_pct)
+        train_dl = DeviceDL(DataLoader(tensor_ds, batch_size = self.batch_size), self.device)
+        valid_dl = DeviceDL(DataLoader(valid_ds, batch_size = self.batch_size,), self.device)
+
+        self.hist = []
+        for e in range(self.epochs):
+            self.train()
+            self.train_loss = []
+            for batch in tqdm(train_dl, desc="Running Batch"):
+                loss = self.get_loss(batch,self.loss_fn)
+                self.train_loss.append(loss)
+
+                loss.backward()
+                self.opt.step()
+                self.opt.zero_grad()
+
+            res = self.validate(valid_dl, self.loss_fn)
+            res['train_loss'] = torch.stack(self.train_loss).mean().item()
+
+            self.__log_epoch(e, res)
+            self.hist.append(res)
+        return self
 
     def fit(
             self,
@@ -157,6 +179,7 @@ class Module(torch_nn.Module):
             epochs, 
             valid_dataloader=None, 
             valid_pct=30, 
+            batch_size=32,
             accuracy=False,
             device='cpu'
         ):
@@ -165,6 +188,7 @@ class Module(torch_nn.Module):
         self.opt = opt
         self.valid_dataloader = valid_dataloader
         self.accuracy = accuracy 
+        self.batch_size=batch_size
 
         if 'DataLoader' in str(type(train_dataloader)):
             self.train_dataloader = train_dataloader
@@ -179,9 +203,3 @@ class Module(torch_nn.Module):
         print(
             ("Please either provide a DataLoader or a TensorDataset"
             " to train the model into. Read the docs: https://github.com/ashimdahal/easy-torch"))
-
-
-    @classmethod
-    def from_model():
-        ...
-    
