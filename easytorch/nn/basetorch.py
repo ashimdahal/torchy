@@ -34,6 +34,11 @@ except ModuleNotFoundError:
 
 
 class Module(torch_nn.Module):
+    """Overrides while inheriting pytorch's nn.Module.
+    This version of Module is to introduce easy-torch's functionality of .fit() on
+    any models cerated by inheriting easy-torch.nn.Module class.
+    """
+
     def get_loss(self, batch, loss_fn):
         self.loss_fn = loss_fn
         x, y = batch
@@ -52,12 +57,11 @@ class Module(torch_nn.Module):
         return {'valid_loss': loss}
 
     @staticmethod
-    def _accuracy(labels,preds):
+    def _accuracy(labels, preds):
         acc = torch.sum(torch.round(preds) == labels) / len(labels)
         return acc
 
-    @staticmethod
-    def __mean_validation(out):
+    def __mean_validation(self, out):
         loss = torch.stack([l['valid_loss'] for l in out]).mean()
         if self.accuracy:
             acc = torch.stack([l['valid_acc'] for l in out]).mean()
@@ -83,7 +87,7 @@ class Module(torch_nn.Module):
                 "training loss is {:.4f} validation loss is {:.4f}, validation accuracy is {:.4f} "
                 )
             .format(
-                e+1,epoch,
+                e+1,self.epochs,
                 res['train_loss'],
                 res['valid_loss'],
                 res['valid_acc']
@@ -94,7 +98,7 @@ class Module(torch_nn.Module):
                 "training loss is {:.4f} validation loss is {:.4f} "
                 )
             .format(
-                e+1,epoch,
+                e+1,self.epochs,
                 res['train_loss'],
                 res['valid_loss'],
                 ))
@@ -118,6 +122,7 @@ class Module(torch_nn.Module):
         self.eval()
         out = [self.__valid_step(batch, loss_fn) for batch in valid_dl]
         return self.__mean_validation(out)
+
 
     def _fit_dataloader(self):
         self.hist = []
@@ -148,10 +153,10 @@ class Module(torch_nn.Module):
         return self
 
     def _fit_dataset(self):
-        train_ds, valid_ds = random_split(self.tensor_ds, self.train_pct)
-        train_dl = DeviceDL(DataLoader(tensor_ds, batch_size = self.batch_size), self.device)
+        train_ds, valid_ds = random_split(self.tensor_ds, self.pct_to_val(self.train_pct, self.tensor_ds))
+        train_dl = DeviceDL(DataLoader(train_ds, batch_size = self.batch_size), self.device)
         valid_dl = DeviceDL(DataLoader(valid_ds, batch_size = self.batch_size,), self.device)
-
+        self.valid_dataloader = valid_dl
         self.hist = []
         for e in range(self.epochs):
             self.train()
@@ -171,8 +176,7 @@ class Module(torch_nn.Module):
             self.hist.append(res)
         return self
 
-    def fit(
-            self,
+    def fit(self,
             train_dataloader, 
             loss_fn, 
             opt, 
