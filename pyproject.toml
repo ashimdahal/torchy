@@ -4,10 +4,10 @@ build-backend = "hatchling.build"
 
 [project]
 name = "torchy"
-version = "0.0.3"
+version = "0.0.5"
 description = "A pytorch wrapper that makes .fit() (and others) possible in nn.Module!"
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.6"
 license = {file = "LICENSE.txt"}
 keywords = ["Torch", "PyTorch", "Deep Learning", "Tensorflow"]
 authors = [
@@ -19,7 +19,7 @@ authors = [
 # ]
 classifiers = [
   "Development Status :: 2 - Pre-Alpha",
-  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.7",
   "Intended Audience :: Developers",
   "Operating System :: OS Independent",
   "Topic :: Scientific/Engineering :: Artificial Intelligence",
@@ -27,6 +27,7 @@ classifiers = [
 
 dependencies = [
   "torch>=1.12.1",
+  "tqdm"
 ]
 repository = "https://github.com/ashimdahal/easy-torch.git"
 
