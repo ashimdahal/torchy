@@ -49,14 +49,15 @@ opt = torch.optim.SGD(model.parameters(), lr=0.001, momentum=.9)
 # Use mode.fit() to fit the model in the given TensorDataset
 model = model.fit(dataset, loss_fn, opt, epochs=20, valid_pct=25, batch_size=2)
 ```
-You can also use a dataloader instead of a dataset. If you're using a dataloader be sure to pass additional argument "valid_dataloader" otherwise 
-the no model validation would be carried out.
-
+You can also use a dataloader instead of a dataset. 
 ```python
 # Use a DataLoader instead of a TensorDataSet
 dataloader = DataLoader(dataset, batch_size = 2)
 model = model.fit(dataloader, loss_fn,opt,20)
 ```
+If you're using a dataloader and want to do validation while running .fit()
+after every epochs, you will have to manually pass valid_dataloader.
+
 
 `torchy.utils.data` can also be used to put your dataloader into a device and split your dataset.
 ```python
