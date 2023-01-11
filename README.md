@@ -11,8 +11,12 @@ modules that exists is that you don't have to re-learn to use the pytorch module
 torchy is a wrapper build on top of pytorch which enables you to use your existing code on pyTorch and still have the added benefits.
 ## Installation using pip
 It's a good idea to have PyTroch preinstalled on your current virtual environment. See [official guide](https://pytorch.org/get-started/locally/) to install PyTorch. 
-<br>
-> pip install torchy
+
+<i>It's recommended to have python version >=3.6 and <=3.8, although no problems have yet been encountered in 3.9, and 3.10.</i>
+
+``` 
+pip install torchy 
+```
 
 PS: PyTorch will be atuomatically installed to your environment if you already don't have it but it's recommended to install it using the official guide.
 ## Additional Functionality
