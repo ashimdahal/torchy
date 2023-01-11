@@ -40,6 +40,17 @@ class Module(torch_nn.Module):
     """
 
     def get_loss(self, batch, loss_fn):
+        """Calculates loss of the given batch.
+
+        Attributes:
+            batch -- Batch from either the dataloader or the dataset overall.
+            loss_fn -- any sort of loss function from torchy.nn.functional. 
+        Returns:
+            Returns the loss calculated by the loss function
+
+        Call it: model.get_loss(batch,loss_fn)
+        """
+
         self.loss_fn = loss_fn
         x, y = batch
         y_hat = self(x)
@@ -48,6 +59,9 @@ class Module(torch_nn.Module):
         return loss
     
     def __valid_step(self, batch, loss_fn):
+        """Validates the given batch with loss function
+        """
+
         loss = self.get_loss(batch, loss_fn)
         if self.accuracy:
             x,y = batch
@@ -58,10 +72,25 @@ class Module(torch_nn.Module):
 
     @staticmethod
     def _accuracy(labels, preds):
+        """Calculates accuracy for a generic classification tasks.
+
+        Attributes:
+            labels: the actual y value/output of the model
+            preds: the predicted y value/preductions for the model
+        Returns:
+            Accuracy of the model based on mathematical formula 
+                True Positives + True Negatives / (True Positives + True Negatives + False Positives + False Negatives)
+
+        Call it: model._accuracy(y,y_hat)
+        """
+
         acc = torch.sum(torch.round(preds) == labels) / len(labels)
         return acc
 
     def __mean_validation(self, out):
+        """Internal function to calculate the mean loss and accuracy of validation step
+        """
+
         loss = torch.stack([l['valid_loss'] for l in out]).mean()
         if self.accuracy:
             acc = torch.stack([l['valid_acc'] for l in out]).mean()
@@ -70,6 +99,9 @@ class Module(torch_nn.Module):
         return {'valid_loss': loss.item(), }
     
     def __log_epoch(self,e,res):
+        """ Prints details about current epoch based on the current model's properties.
+        """
+
         if self.valid_dataloader is None:
             print((
                 "[{} / {}] epoch/s,"
@@ -104,18 +136,27 @@ class Module(torch_nn.Module):
                 ))
     @staticmethod
     def pct_to_val(train_pct,data):
-    
         '''Helper function to make code cleaer.
         changes percentage split into numbers of data.
-        INPUTS:
-        train_pct: the percentage of training data 
-        valid_pct: the percentage of validation data
-        data: the dataset
-        returns: numbers of data'''
+
+        Attributes:
+            train_pct -- the percentage of training data 
+            data -- the dataset
+        Returns: 
+            number of data that sould be on training and validation sets
+        '''
 
         train_num = int(train_pct/100*len(data))
         valid_num = int(len(data) - train_num)
         return train_num , valid_num
+
+    @staticmethod
+    def to_device(data, device):
+        ''' puts the given data into specified device
+        '''
+        if isinstance(data,(list,tuple)):
+            return [self.to_device(d,device) for d in data]
+        return data.to(device,non_blocking = True)
 
     @torch.no_grad()
     def validate(self, valid_dl, loss_fn):
@@ -123,8 +164,15 @@ class Module(torch_nn.Module):
         out = [self.__valid_step(batch, loss_fn) for batch in valid_dl]
         return self.__mean_validation(out)
 
-
     def _fit_dataloader(self):
+        """Fits self/model on the given dataloader
+        
+        Attributes:
+            self -- the model and its different attributes. See fit() 
+                    for details of the attributes written here
+        Returns:
+            trained self/model
+        """
         self.hist = []
         for e in range(self.epochs):
 
@@ -153,9 +201,22 @@ class Module(torch_nn.Module):
         return self
 
     def _fit_dataset(self):
+        """Fits self/model on the given TensorDataset.
+        The model currently can only accept TensorDataset as a dataset to train 
+        the model.
+        
+        Attributes:
+            self -- the model and its different attributes. See fit() 
+                    for details of the attributes written here
+        Returns:
+            trained self/model
+        """
         train_ds, valid_ds = random_split(self.tensor_ds, self.pct_to_val(self.train_pct, self.tensor_ds))
+
         train_dl = DeviceDL(DataLoader(train_ds, batch_size = self.batch_size), self.device)
         valid_dl = DeviceDL(DataLoader(valid_ds, batch_size = self.batch_size,), self.device)
+        self = self.to_device(self,self.device)
+
         self.valid_dataloader = valid_dl
         self.hist = []
         for e in range(self.epochs):
@@ -187,6 +248,29 @@ class Module(torch_nn.Module):
             accuracy=False,
             device='cpu'
         ):
+        '''Fits the given dataloader or dataset to the model/self.
+        If dataloader is given, model cannot generate its own validation dataloader so
+        it's a good practice to pass valid_dataloader while passing a train dataloader.
+        
+        If dataset is provided dataloader for both train and validation sets is created
+        and the model is fitted based on the given parameters.
+
+        Attributes:
+            train_dataloader -- either the training dataloader or the entire dataset to fit the model into
+            loss_fn -- an appropirate function choosed from nn.functional
+            opt -- an appropirate function choosed from torch.optim
+            epochs -- number of epochs to train the model
+            valid_dataloader -- the validation dataloader, only needed if training dataloader is provided 
+                instead of a TensorDataset.
+            valid_pct -- the percentage of validation batch from the TensorDataset. 
+            batch_size -- only needed if TensorDataset is provided-> the batch size for each training dataloader
+                and validation dataloader
+            accuracy -- True or False, a boolean to either calculate generic accuracy of the model or not
+            device -- The device to use to put the dataloader or dataset into.
+
+        Returns:
+            trained model based on _fit_dataset() or _fit_dataloader
+        '''
         self.epochs = epochs
         self.loss_fn = loss_fn
         self.opt = opt
