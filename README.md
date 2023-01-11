@@ -17,7 +17,7 @@ It's a good idea to have PyTroch preinstalled on your current virtual environmen
 PS: PyTorch will be atuomatically installed to your environment if you already don't have it but it's recommended to install it using the official guide.
 ## Additional Functionality
 Define a model using nn.Module just like with regular pyTorch but `import torchy.nn` instead of `torch.nn`.
-```python
+```py
 import torchy.nn as nn
 
 
@@ -34,7 +34,7 @@ model = Model()
 ```
 Now you can use torchy's functionality.
 
-```python
+```py
 import torch
 from torchy.utils.data import TensorDataset, DataLoader
 
@@ -60,7 +60,7 @@ after every epochs, you will have to manually pass valid_dataloader.
 
 
 `torchy.utils.data` can also be used to put your dataloader into a device and split your dataset.
-```python
+```py
 from torchy.utils.data import DeviceDL, SplitPCT
 # put dataloader in appropirate device
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')

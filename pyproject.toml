@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "torchy"
-version = "0.0.2"
+version = "0.0.3"
 description = "A pytorch wrapper that makes .fit() (and others) possible in nn.Module!"
 readme = "README.md"
 requires-python = ">=3.8"
@@ -28,6 +28,7 @@ classifiers = [
 dependencies = [
   "torch>=1.12.1",
 ]
+repository = "https://github.com/ashimdahal/easy-torch.git"
 
 # dynamic = ["version", "description"]
 
@@ -35,4 +36,4 @@ dependencies = [
 # homepage = "https://example.com"
 # documentation = "https://readthedocs.org"
 repository = "https://github.com/ashimdahal/easy-torch.git"
-changelog = "https://github.com/me/spam/blob/master/CHANGELOG.md"
+Bugs = "https://github.com/ashimdahal/easy-torch/issues"
