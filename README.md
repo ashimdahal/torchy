@@ -1,7 +1,7 @@
 # Welcome to torchy
 torchy is a work in progress and will be going through constant changes everyday.
 ## Introduction
-torchy is a PyTorch wrapper that has some additional benefits to using plain pytorch. With easy-torch you have everything in pytorch plus
+torchy is a PyTorch wrapper that has some additional benefits to using plain pytorch. With torchy you have everything in pytorch plus
 some additional features found on other libraries. The main separating factor between torchy and torchfit or 100s of other pytorch-like
 modules that exists is that you don't have to re-learn things for torchy.
 
