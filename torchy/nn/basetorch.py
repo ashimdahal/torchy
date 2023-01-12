@@ -150,8 +150,7 @@ class Module(torch_nn.Module):
         valid_num = int(len(data) - train_num)
         return train_num , valid_num
 
-    @staticmethod
-    def to_device(data, device):
+    def to_device(self, data, device):
         ''' puts the given data into specified device
         '''
         if isinstance(data,(list,tuple)):
