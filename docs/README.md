@@ -37,6 +37,19 @@ PS: When using model.validate() you don't need to do model.eval() beforehand as 
 torchy.utils.data has 2 new additional utilities:
 
 ###  DeviceDL
+DeviceDL is a helper tool to put your DataLoader into given device in the most efficient way. It's not recommended to put the entire DataLoader into given device in pytorch, so DeviceDL would only put the current batch in the specified device and pytorch will automatically remove the batch from device after its processed.
+
+DeviceDL can be used in the following way:
+```python
+from torchy.utils.data import DeviceDL, DataLoader, TensorDataset
+# create a TensorDataset
+dataset = TensorDataset(x,y)
+# create your desired dataloader with the hyperparameters
+dataloader = DataLoader(dataset, ...)
+# now put your dataloader into the appropirate device using DeviceDL
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+dataloader_device = DeviceDL(dataloader, device)
+```
 
 ### SplitPCT
 
