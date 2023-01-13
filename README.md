@@ -57,6 +57,8 @@ loss_fn = nn.functional.mse_loss
 opt = torch.optim.SGD(model.parameters(), lr=0.001, momentum=.9)
 # Use mode.fit() to fit the model in the given TensorDataset
 model = model.fit(dataset, loss_fn, opt, epochs=20, valid_pct=25, batch_size=2)
+# Now you have a trained model and can also access model.hist attribute
+print(model.hist)
 ```
 You can also use a dataloader instead of a dataset. 
 ```python
