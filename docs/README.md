@@ -74,8 +74,16 @@ train_ds, validaiton_ds = dataset.train_ds, dataset.validation_ds
 orig_dataset = dataset.tensor_dataset
 ```
 PS: the dataset passed to SplitPCT can be any type of pytorch's dataset and should not be limited to TensorDataset.
+|Argument | Description|
+|-----------|------------|
+|tensor_dataset| The dataset that you have created using for your model.|
+|train_pct| The percentage of data that sould be on the training dataset; rest will be validation dataset.|
 ## Effect on torch.nn
 
+By definition, torchy is a pytorch wrapper, so there will be no changes on torch.nn or any other torch functionality. torchy.nn can replacetorch.nn there will not be any unsolvable errors.
 # Torchy user guides and tutorials
+Examples to use torchy can also be found on the project readme at [github](https://github.com/ashimdahal/torchy). 
+<i>This will be updated soon.</i>
 
 # Why torchy is better than other pytorch .fit() implementations
+Because the wheel doesn't need to be reinvented when using torchy. The end user can just use torchy as torch and just learn some new methods in the nn.Module that are handy. 
