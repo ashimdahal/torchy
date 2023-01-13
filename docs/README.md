@@ -34,7 +34,6 @@ Following is the official documentation of torchy wrapper and all the additional
 PS: When using model.validate() you don't need to do model.eval() beforehand as the method is already decorated with `@torch.no_grad()` and has `self.eval()` implemented whithin the method.
 
 ## What additional utilities are in torchy.utils.data?
-torchy.utils.data has 2 new additional utilities:
 
 ###  DeviceDL
 DeviceDL is a helper tool to put your DataLoader into given device in the most efficient way. It's not recommended to put the entire DataLoader into given device in pytorch, so DeviceDL would only put the current batch in the specified device and pytorch will automatically remove the batch from device after its processed.
@@ -50,6 +49,11 @@ dataloader = DataLoader(dataset, ...)
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 dataloader_device = DeviceDL(dataloader, device)
 ```
+|Argument | Description|
+|-----------|------------|
+|dl| The dataloader that you have created using for your model.|
+|dev| The device that the given dataloader should be kept in.|
+
 
 ### SplitPCT
 
