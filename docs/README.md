@@ -56,7 +56,24 @@ dataloader_device = DeviceDL(dataloader, device)
 
 
 ### SplitPCT
+Do you find it a `meh` experience when you have to count the number of examples you want to use in your training and validation set when using random_split? you don't want to install sklearn in your virtual environment just to split your dataset into train and validation sets?
 
+If so, SplitPCT is a native pytorch's implementation to split the given dataset into training and validaiton set based on the percentage of data you want in training set and not the number of examples that the dataset should be divided into.
+
+SplitPCT can be used in the following way:
+```python
+from torchy.utils.data import SplitPCT, TensorDataset
+# create a dataset
+dataset = TensorDataset(x,y)
+# determine what percentage of data should be on your training dataset
+training_pct = 75
+dataset = SplitPCT(dataset,training_pct)
+# get training dataset and validation dataset as attributes
+train_ds, validaiton_ds = dataset.train_ds, dataset.validation_ds
+# get the original TensorDataset
+orig_dataset = dataset.tensor_dataset
+```
+PS: the dataset passed to SplitPCT can be any type of pytorch's dataset and should not be limited to TensorDataset.
 ## Effect on torch.nn
 
 # Torchy user guides and tutorials
