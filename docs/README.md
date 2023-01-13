@@ -82,7 +82,7 @@ PS: the dataset passed to SplitPCT can be any type of pytorch's dataset and shou
 
 By definition, torchy is a pytorch wrapper, so there will be no changes on torch.nn or any other torch functionality. torchy.nn can replacetorch.nn there will not be any unsolvable errors.
 # Torchy user guides and tutorials
-Examples to use torchy can also be found on the project readme at [github](https://github.com/ashimdahal/torchy). 
+Examples and quick start guide to use torchy can also be found on the project readme at [github](https://github.com/ashimdahal/torchy#additional-functionality). 
 <i>This will be updated soon.</i>
 
 # Why torchy is better than other pytorch .fit() implementations
