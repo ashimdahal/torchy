@@ -2,7 +2,7 @@
 The aim of this project is to create a PyTorch wrapper that wraps the torch.nn.Module and has additional data preprocessing utilities on torch.utils.data.
 We aim to retain every functionality of PyTorch, while keeping them native, and also add our piece of functionality.
 
-<b>The aim of torchy is to enhance the experience of Pytorch and not to replace it. torchy is currently a work in progress and will be going through constant changes everyday.</b>
+<b>The aim of torchy is to enhance the experience of Pytorch and not to replace it. torchy is ready to be used in everyday code and is in a beta stage as of today. After additional checks and testing, torchy will be passed as stable.</b>
 ## Introduction
 torchy is a PyTorch wrapper that has some additional benefits to using plain pytorch. With torchy you have everything in pytorch plus
 some additional features found on other libraries. The main separating factor between torchy and torchfit or 100s of other pytorch-like
@@ -14,8 +14,13 @@ It's a good idea to have PyTroch preinstalled on your current virtual environmen
 
 <i>It's recommended to have python version >=3.6 and <=3.8, although no problems have yet been encountered in 3.9, and 3.10.</i>
 
+Use pypi's pip to install torchy.
 ``` 
 pip install torchy 
+```
+or
+```
+pip3 install torchy
 ```
 
 PS: PyTorch will be atuomatically installed to your environment if you already don't have it but it's recommended to install it using the official guide.
@@ -75,12 +80,9 @@ dataset = SplitPCT(dataset)
 train_ds, valid_ds = dataset.train_ds, dataset.valid_ds
 ```
 
-Additional features like get_loss(), _accuracy() and full documentation, user guide, best practices and tutorials to use torchy can be found in the [docs](docs/README.md).
+Additional features like get_loss(), _accuracy() and full documentation, user guide, best practices and tutorials to use torchy can be found in the [docs](https://github.com/ashimdahal/torchy/blob/master/docs/README.md).
 
 ## To-do
-
-0. Documentation
-1. Docstring
-2. More testing
+0. More testing
 
 Feel free to contribute your code and drop a star on the project if you liked the idea.
