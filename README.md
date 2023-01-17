@@ -2,6 +2,7 @@
 The aim of this project is to create a PyTorch wrapper that wraps the torch.nn.Module and has additional data preprocessing utilities on torch.utils.data.
 We aim to retain every functionality of PyTorch, while keeping them native, and also add our piece of functionality.
 
+
 <b>The aim of torchy is to enhance the experience of Pytorch and not to replace it. torchy is ready to be used in everyday code and is in a beta stage as of today. After additional checks and testing, torchy will be passed as stable.</b>
 ## Introduction
 torchy is a PyTorch wrapper that has some additional benefits to using plain pytorch. With torchy you have everything in pytorch plus
