@@ -1,5 +1,6 @@
 # Torchy Docs
 Following is the official documentation of torchy wrapper and all the additional functions of the wrapper. This documentation contains detail descriptions of all the arguments that can be passed on the new utilities of nn.Module as well as guides and tutorials to make the best use of torchy wrapper.
+
 ## Using model.fit()
 |Argument | Default| Description|
 |---------|----------|--------|
