@@ -14,6 +14,7 @@ Following is the official documentation of torchy wrapper and all the additional
 |accuracy| False| Either to calculate the accuracy of model or not. Pass Boolean True or False.
 |device| CPU | The device that the given model, and its dataset should be converted into. Only provide device if you passed a TensorDataset. Value should be any device available ('cpu' or'cuda').
 
+
 ## Using other utility tools on torchy.nn.Module
 ### model.get_loss()
 |Argument | Description|
