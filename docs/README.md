@@ -76,6 +76,7 @@ train_ds, validaiton_ds = dataset.train_ds, dataset.validation_ds
 orig_dataset = dataset.tensor_dataset
 ```
 PS: the dataset passed to SplitPCT can be any type of pytorch's dataset and should not be limited to TensorDataset.
+
 |Argument | Description|
 |-----------|------------|
 |tensor_dataset| The dataset that you have created using for your model.|
