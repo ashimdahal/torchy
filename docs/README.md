@@ -133,9 +133,12 @@ hist = model.fit(
     device=device
     )
 ```
+If you don't want to go through the hassle of making a dataloader then don't worry, torchy will do it for you. 
 
+PS: Torchy requires a TensorDataset to be passed for the following implementation to work.
 
-<i>This will be updated soon.</i>
+```py
 
+```
 # Why torchy is better than other pytorch .fit() implementations
 Because the wheel doesn't need to be reinvented when using torchy. The end user can just use torchy as torch and just learn some new methods in the nn.Module that are handy. 
