@@ -1,5 +1,6 @@
 # Torchy Docs
-Following is the official documentation of torchy wrapper and all the additional functions of the wrapper. This documentation contains detail descriptions of all the arguments that can be passed on the new utilities of nn.Module as well as guides and tutorials to make the best use of torchy wrapper.
+Following is the official documentation of torchy, a pytorch wrapper, and all the additional functions of the wrapper. This documentation contains detail descriptions of all the arguments that can be passed on the new utilities of nn.Module as well as guides and tutorials to make the best use of torchy wrapper.
+
 ## Using model.fit()
 |Argument | Default| Description|
 |---------|----------|--------|
@@ -12,6 +13,7 @@ Following is the official documentation of torchy wrapper and all the additional
 |batch_size| 32 | The batch size of the Training DataLoader that will be created when you upload a TensorDataset. Ignore if you passed a DataLoader by default.
 |accuracy| False| Either to calculate the accuracy of model or not. Pass Boolean True or False.
 |device| CPU | The device that the given model, and its dataset should be converted into. Only provide device if you passed a TensorDataset. Value should be any device available ('cpu' or'cuda').
+
 
 ## Using other utility tools on torchy.nn.Module
 ### model.get_loss()
@@ -74,6 +76,7 @@ train_ds, validaiton_ds = dataset.train_ds, dataset.validation_ds
 orig_dataset = dataset.tensor_dataset
 ```
 PS: the dataset passed to SplitPCT can be any type of pytorch's dataset and should not be limited to TensorDataset.
+
 |Argument | Description|
 |-----------|------------|
 |tensor_dataset| The dataset that you have created using for your model.|
