@@ -131,14 +131,24 @@ hist = model.fit(
     batch_size=64, 
     accuracy=True, 
     device=device
-    )
+)
 ```
 If you don't want to go through the hassle of making a dataloader then don't worry, torchy will do it for you. 
 
 PS: Torchy requires a TensorDataset to be passed for the following implementation to work.
 
 ```py
-
+hist = model.fit(
+    dataset,
+    loss_fn,
+    opt,
+    epochs,
+    valic_pct=30,
+    batch_size=64,
+    accuracy=True,
+    device=device
+)
 ```
+Looks pretty same and simple with the only change being you have to provide the percentage of the dataset that should be in the validation dataset and eventually the validation dataloader.
 # Why torchy is better than other pytorch .fit() implementations
 Because the wheel doesn't need to be reinvented when using torchy. The end user can just use torchy as torch and just learn some new methods in the nn.Module that are handy. 
