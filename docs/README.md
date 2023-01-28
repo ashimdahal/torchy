@@ -87,9 +87,51 @@ Examples and quick start guide to use torchy can also be found on the project re
 Since torchy is just a Wrapper and doesn't implement everything from scratch its recommended to implement just the nn.Module using the wrapper. 
 
 Recommended
-```py
+```python
+import torch
 import torchy.nn as nn
 import torch.nn.functional as F
+```
+Make your models as you would using torch.nn
+```py
+class Model(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.linear = nn.Linear(1, 1)
+
+    def forward(self,x):
+        return self.linear(x)
+
+
+model = Model()
+```
+Choose your loss function and optimizers
+```py
+loss_fn = F.mse_loss
+opt = torch.optim.SGD(model.parameters(), lr=0.001)
+```
+Then, you can use torchy's DeviceDL to put your DataLoader in the given device
+
+```py
+from torchy.utils.data import DeviceDL
+
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+train_dataloader = DeviceDL(old_dataloader, device)
+valid_dataloader = DeviceDL(old_valid_dataloader, device)
+```
+
+Now you can fit the model
+```py
+hist = model.fit(
+    train_dataloader,
+    loss_fn, 
+    opt, 
+    epochs, 
+    valid_dataloader, 
+    batch_size=64, 
+    accuracy=True, 
+    device=device
+    )
 ```
 
 
