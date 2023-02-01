@@ -151,6 +151,7 @@ hist = model.fit(
     accuracy=True,
     device=device
 )
+print(hist)
 ```
 Looks pretty same and simple with the only change being you have to provide the percentage of the dataset that should be in the validation dataset and eventually the validation dataloader.
 # Why torchy is better than other pytorch .fit() implementations
