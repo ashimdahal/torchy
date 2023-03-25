@@ -74,7 +74,7 @@ after every epochs, you will have to manually pass valid_dataloader.
 `torchy.utils.data` can also be used to put your dataloader into a device and split your dataset.
 ```py
 from torchy.utils.data import DeviceDL, SplitPCT
-# put dataloader in appropirate device
+# put dataloader in appropriate device
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 dataloader = DeviceDL(dataloader)
 
