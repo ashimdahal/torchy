@@ -11,7 +11,7 @@ modules that exists is that you don't have to re-learn to use the pytorch module
 
 torchy is a wrapper build on top of pytorch which enables you to use your existing code on pyTorch and still have the added benefits.
 ## Installation using pip
-It's a good idea to have PyTroch preinstalled on your current virtual environment. See [official guide](https://pytorch.org/get-started/locally/) to install PyTorch. 
+It's a good idea to have PyTorch preinstalled on your current virtual environment. See [official guide](https://pytorch.org/get-started/locally/) to install PyTorch. 
 
 <i>It's recommended to have python version >=3.6 and <=3.8, although no problems have yet been encountered in 3.9, and 3.10.</i>
 
@@ -24,7 +24,7 @@ or
 pip3 install torchy
 ```
 
-PS: PyTorch will be atuomatically installed to your environment if you already don't have it but it's recommended to install it using the official guide.
+PS: PyTorch will be automatically installed to your environment if you already don't have it but it's recommended to install it using the official guide.
 ## Additional Functionality
 Define a model using nn.Module just like with regular pyTorch but `import torchy.nn` instead of `torch.nn`.
 ```py
@@ -74,7 +74,7 @@ after every epochs, you will have to manually pass valid_dataloader.
 `torchy.utils.data` can also be used to put your dataloader into a device and split your dataset.
 ```py
 from torchy.utils.data import DeviceDL, SplitPCT
-# put dataloader in appropirate device
+# put dataloader in appropriate device
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 dataloader = DeviceDL(dataloader)
 
