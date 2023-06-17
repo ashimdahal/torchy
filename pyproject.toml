@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "torchy"
-version = "0.1.2"
+version = "0.1.3"
 description = "A pytorch wrapper that makes .fit() (and others) possible in nn.Module!"
 readme = "README.md"
 requires-python = ">=3.6"
@@ -14,9 +14,11 @@ authors = [
   {email = "codeashim@gmail.com"},
   {name = "Ashim Dahal"}
 ]
+
 # maintainers = [
 #   {name = "Brett Cannon", email = "brett@python.org"}
 # ]
+
 classifiers = [
   "Development Status :: 4 - Beta",
   "Programming Language :: Python :: 3.7",
