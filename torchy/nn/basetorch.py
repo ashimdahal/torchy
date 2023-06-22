@@ -71,7 +71,7 @@ class Module(torch_nn.Module):
         return {'valid_loss': loss}
 
     @staticmethod
-    def _accuracy(labels, preds):
+    def _accuracy(labels, preds, from_logits=False):
         """Calculates accuracy for a generic classification tasks.
 
         Attributes:
@@ -83,7 +83,10 @@ class Module(torch_nn.Module):
 
         Call it: model._accuracy(y,y_hat)
         """
-
+        if from_logits:
+            max_arg = torch.argmax(torch.nn.Softmax(labels))
+            acc = torch.sum(torch.round(preds) == max_arg) / len(labels)
+            return acc
         acc = torch.sum(torch.round(preds) == labels) / len(labels)
         return acc
 
